@@ -1,8 +1,5 @@
-# Codes On Bitwise Operators
-
-## 1. Bitwise AND(), Bitwise OR(), Bitwise XOR()
-
-```java
+Codes On Bitwise Operators
+1. Bitwise AND(), Bitwise OR(), Bitwise XOR()
 class Program1
 {
 	public static void main(String[] args)
@@ -24,10 +21,6 @@ class Program1
 // 9
 // 15
 // 6
-
-```
-
-```java
 class Program2
 {
 	public static void main(String[] args)
@@ -44,9 +37,6 @@ class Program2
 // 17
 // 29
 // 12
-```
-
-```java
 class Program3
 {
 	public static void main(String[] args)
@@ -65,9 +55,6 @@ class Program3
 // 36
 // 61
 // 25
-```
-
-```java
 class Program4
 {
 	public static void main(String[] args)
@@ -84,11 +71,7 @@ class Program4
 // 9
 // 31
 // 22
-```
-
-## 2. Left Shift Operator **(<<)**
-
-```java
+2. Left Shift Operator (<<)
 class Program5
 {
 	public static void main(String[] args)
@@ -109,11 +92,7 @@ class Program5
 // 42
 // 34
 // 40
-```
-
-## 3. Right Shift Operator **(>>)**
-
-```java
+3. Right Shift Operator (>>)
 class Program6
 {
 	public static void main(String[] args)
@@ -134,4 +113,3 @@ class Program6
 // 5
 // 11
 // 17
-```
