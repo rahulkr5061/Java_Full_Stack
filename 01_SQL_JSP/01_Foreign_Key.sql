@@ -201,7 +201,7 @@ SQL> select * from student;
        SID NAME            DOB            PHONE
 ---------- --------------- --------- ----------
        101 nithin          12-NOV-04 8240898175
-       102 prem            12-DEC-44 8240895675
+       102 rahul            12-DEC-44 8240895675
        103 priya           12-JAN-05     824085
        104 bahubali        12-FEB-55     824078
 
@@ -280,7 +280,7 @@ SQL> create table customer(
 
 Table created.
 
-SQL> insert into customer values(101, 'prem', 'abc@gmail.com', 8240368156);
+SQL> insert into customer values(101, 'rahul', 'abc@gmail.com', 8240368156);
 1 row created.
 
 SQL> insert into customer values(102, 'riya', 'def@gmail.com', 8240364568);
@@ -297,7 +297,7 @@ SQL> select * from customer;
 
        CID NAME            EMAIL                          PHONE
 ---------- --------------- ------------------------- ----------
-       101 prem            abc@gmail.com             8240368156
+       101 rahul            abc@gmail.com             8240368156
        102 riya            def@gmail.com             8240364568
 
 ```
