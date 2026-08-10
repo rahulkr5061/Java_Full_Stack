@@ -1,1512 +1,882 @@
-# DQL 
+>Users: scott, hr  
+>Passowrd: tiger
 
-## Queries Based on Projection:
+# Basic SQL*Plus Commands
 
-> Projection => It is a way of retrieving the data present in columns.
+1. **show user** => It displays the current username.
+2. **show pages** => It displays the page size.
+3. **show lines** => It displays the line size.
+4. **select * from tab;** =>It displays all the table name.
+5. **select * from dept;** => It displays all the details of the dept (Department) table.
+6. **set pages100 lines100** => Sets the page size to 100 rows and the line width to 100 characters for displaying output neatly in SQL*Plus.
+7. **cl scr OR clear screen** => Used to clear the screen.
+8. **exit** => Used to exit from SQL Plus.
+9. **desc dept** => Displays the structure of the DEPT table, including column names, data types, and constraints.
+10. If we want to switch one user to another user:
+    ```sql
+    conn
+    enter username - hr
+    enter password - tiger
+    ```
+11. **commit** => COMMIT permanently saves all pending transactions to the database.COMMIT permanently saves all pending transactions to the database.
 
->We will Perform the Queries on **EMP**(Employee) Database:
-
-```
-SQL> SELECT * FROM EMP;
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
-      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
-      7839 KING       PRESIDENT            17-NOV-81       5000                    10
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
-      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
-
-14 rows selected.
-```
-
-### 1. Write a query to display distinct salary from emp.
-
-```sql
-SQL> SELECT DISTINCT SAL
-  2  FROM EMP;
-
-       SAL
-----------
-      2450
-      5000
-      1300
-      1250
-      2850
-      2975
-      1100
-      3000
-       800
-      1600
-      1500
-       950
-
-12 rows selected.
-```
-
-```
-Explanation:
-
-DISTINCT removes duplicate values — here, 1250 appears twice (WARD and MARTIN) and 3000 appears twice (SCOTT and FORD), so they show only once each.
-Result: 12 distinct salary values out of 14 rows.
-```
-
-### 2. Write a query to display Annual Salary.
-
-```sql
-SQL> SELECT SAL*12 AS "ANNUAL SALARY" FROM EMP;
-
-ANNUAL SALARY
--------------
-         9600
-        19200
-        15000
-        35700
-        15000
-        34200
-        29400
-        36000
-        60000
-        18000
-        13200
-        11400
-        36000
-        15600
-
-14 rows selected.
-```
-
-### 3. Write a query to display half term (6 months) Salary.
-
-```sql
-SQL> SELECT SAL*6 AS "HALF_TERM_SAL"
-  2  FROM EMP;
-
-HALF_TERM_SAL
--------------
-         4800
-         9600
-         7500
-        17850
-         7500
-        17100
-        14700
-        18000
-        30000
-         9000
-         6600
-         5700
-        18000
-         7800
-
-14 rows selected.
-```
-
-### 4. Write a query to display quarter salary.
-
-```sql
-SQL> SELECT SAL*3 AS "QUARTER_SAL"
-  2  FROM EMP;
-
-QUARTER_SAL
------------
-       2400
-       4800
-       3750
-       8925
-       3750
-       8550
-       7350
-       9000
-      15000
-       4500
-       3300
-       2850
-       9000
-       3900
-
-14 rows selected.
-```
-
-### 5. Write a query to display salary with bonus of 500.
-
-```sql
-SQL> SELECT SAL+500 AS "SAL_WITH_BONUS"
-  2  FROM EMP;
-
-SAL_WITH_BONUS
---------------
-          1300
-          2100
-          1750
-          3475
-          1750
-          3350
-          2950
-          3500
-          5500
-          2000
-          1600
-          1450
-          3500
-          1800
-
-14 rows selected.
-```
-
-### 6. Write a query to display employee name, salary with increment of 10%.
-
-```sql
-SQL> SELECT ENAME, SAL+(SAL*10/100) AS "SAL_WITH_INCREMENT"
-  2  FROM EMP;
-
-ENAME      SAL_WITH_INCREMENT
----------- ------------------
-SMITH                     880
-ALLEN                    1760
-WARD                     1375
-JONES                  3272.5
-MARTIN                   1375
-BLAKE                    3135
-CLARK                    2695
-SCOTT                    3300
-KING                     5500
-TURNER                   1650
-ADAMS                    1210
-JAMES                    1045
-FORD                     3300
-MILLER                   1430
-
-14 rows selected.
-```
-> HERE IS ANOTHER WAY TO WRITE **SAL+(SAL*10/100)**  
->WE CAN WRITE IT LIKE **SAL+(SAL*0.10)**. BOTH ARE SAME.
-
-### 7. Write a query to display employee name, salary with decrement of 50%.
-
-```sql
-SQL> SELECT ENAME, SAL-(SAL*50/100) AS "SAL_WITH_DECREMENT"
-  2  FROM EMP;
-
-ENAME      SAL_WITH_DECREMENT
----------- ------------------
-SMITH                     400
-ALLEN                     800
-WARD                      625
-JONES                  1487.5
-MARTIN                    625
-BLAKE                    1425
-CLARK                    1225
-SCOTT                    1500
-KING                     2500
-TURNER                    750
-ADAMS                     550
-JAMES                     475
-FORD                     1500
-MILLER                    650
-
-14 rows selected.
-```
-
-### 8. Write a query to display employee name, Annual salary with increment of 20%.
-
-```sql
-SQL> SELECT ENAME, (SAL*12)+(SAL*12*0.20) AS "ANNUAL_SAL_WITH_INCREMENT"
-  2  FROM EMP;
-
-ENAME      ANNUAL_SAL_WITH_INCREMENT
----------- -------------------------
-SMITH                          11520
-ALLEN                          23040
-WARD                           18000
-JONES                          42840
-MARTIN                         18000
-BLAKE                          41040
-CLARK                          35280
-SCOTT                          43200
-KING                           72000
-TURNER                         21600
-ADAMS                          15840
-JAMES                          13680
-FORD                           43200
-MILLER                         18720
-
-14 rows selected.
-
-```
-
-### 9. Write a query to display employee name, Annual salary with decrement of 90%.
-
-```sql
-SQL> SELECT ENAME, (SAL*12)-(SAL*12*0.90)
-  2  AS "ANNUAL_SAL_WITH_DECREMENT"
-  3  FROM EMP;
-
-ENAME      ANNUAL_SAL_WITH_DECREMENT
----------- -------------------------
-SMITH                            960
-ALLEN                           1920
-WARD                            1500
-JONES                           3570
-MARTIN                          1500
-BLAKE                           3420
-CLARK                           2940
-SCOTT                           3600
-KING                            6000
-TURNER                          1800
-ADAMS                           1320
-JAMES                           1140
-FORD                            3600
-MILLER                          1560
-
-14 rows selected.
-```
-
-### 10. Write a query to alias name as popstar.
-
-```sql
-SQL> SELECT ENAME AS "POPSTAR"
-  2  FROM EMP;
-
-POPSTAR
-----------
-SMITH
-ALLEN
-WARD
-JONES
-MARTIN
-BLAKE
-CLARK
-SCOTT
-KING
-TURNER
-ADAMS
-JAMES
-FORD
-MILLER
-
-14 rows selected.
-```
-
-### 11. Write a query to display employee name, Annual salary with bonus of 700.
-
-```sql
-SQL> SELECT ENAME, (SAL*12)+700 AS "ANNUAL_SAL_WITH_BONUS"
-  2  FROM EMP;
-
-ENAME      ANNUAL_SAL_WITH_BONUS
----------- ---------------------
-SMITH                      10300
-ALLEN                      19900
-WARD                       15700
-JONES                      36400
-MARTIN                     15700
-BLAKE                      34900
-CLARK                      30100
-SCOTT                      36700
-KING                       60700
-TURNER                     18700
-ADAMS                      13900
-JAMES                      12100
-FORD                       36700
-MILLER                     16300
-
-14 rows selected.
-```
-
-### 12. Write a query to display employee name, halfterm salary with bonus of 300.
-
-```sql
-SQL> SELECT ENAME, (SAL*6)+300 AS "HALFTERM_SAL_WITH_BONUS"
-  2  FROM EMP;
-
-ENAME      HALFTERM_SAL_WITH_BONUS
----------- -----------------------
-SMITH                         5100
-ALLEN                         9900
-WARD                          7800
-JONES                        18150
-MARTIN                        7800
-BLAKE                        17400
-CLARK                        15000
-SCOTT                        18300
-KING                         30300
-TURNER                        9300
-ADAMS                         6900
-JAMES                         6000
-FORD                         18300
-MILLER                        8100
-
-14 rows selected.
-```
 ---
 
-## Queries Based on Selection:
-
-> Selection is a way of retrieving the data present in rows and columns.
-
-### 13. Write a query to display all the details of the employee earning salary greater than 2000.
 ```sql
-SQL> SELECT * FROM EMP
-  2  WHERE SAL > 2000;
+Enter user-name: scott
+Enter password:
 
+Connected to:
+Oracle Database 11g Enterprise Edition Release 11.1.0.6.0 - Production
+With the Partitioning, OLAP, Data Mining and Real Application Testing options
 
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7566 JONES      MANAGER         7839 02-APR-81       2975               20
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850               30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450               10
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000               20
-      7839 KING       PRESIDENT            17-NOV-81       5000               10
-      7902 FORD       ANALYST         7566 03-DEC-81       3000               20
+SQL> show user  //Commands
+USER is "SCOTT" //Output
 
-6 rows selected.
-```
-### 14. Display all the details of the employees where designation is 'Manager'.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE JOB = 'MANAGER';
+SQL> show pages
+pagesize 14
 
+SQL> show lines
+linesize 80
 
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
-
-```
-
-### 15. Display all the details for employee Scott.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE ENAME = 'SCOTT';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
-
-```
-
-### 16. Write a query to dsiplay all the details where department number is 20.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE DEPTNO = 20;
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
-      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
-      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
-
-```
-
-### 17. Display all the details where designation(job) is 'Salesman', 'Analyst' and 'Clerk'.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE JOB IN ('SALESMAN', 'ANALYST', 'CLERK');
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
-      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
-
-10 rows selected.
-```
->Another Approach
-
-```SQL
-SQL> SELECT * FROM EMP
-  2  WHERE JOB = 'SALESMAN' OR JOB = 'ANALYST' OR JOB = 'CLERK';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
-      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
-
-10 rows selected.
-```
-
-### 18. Display all the details where department no is 10, 20, 40 and 50.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE DEPTNO IN (10,20,40,50);
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
-      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
-      7839 KING       PRESIDENT            17-NOV-81       5000                    10
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
-      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
-
-8 rows selected.
-```
->Another Approach 
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE DEPTNO = 10 OR DEPTNO = 20 OR DEPTNO = 40 OR DEPTNO = 50;
-
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
-      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
-      7839 KING       PRESIDENT            17-NOV-81       5000                    10
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
-      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
-
-8 rows selected.
-```
-
-### 19. Write a query to display employee details where working in the department no is 10, 30, 60, 90 and working in the designation 'Manager', 'Analyst' and 'Clerk' and earning salary less than two thousand .
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE DEPTNO IN (10, 30, 60, 90)
-  3  AND JOB IN ('MANAGER', 'ANALYST', 'CLERK')
-  4  AND SAL < 2000;
-
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
-      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
-
-```
-
-### 20. Display all the details where Salary is greater than 1000 and less than 3000. 
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE SAL > 1000 AND SAL < 3000;
-
-
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
-      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+SQL> select * from tab;  //Commands
+//Output
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+BIN$SOMbZNA5TGCFoTzsOq4H1g==$0 TABLE
+BONUS                          TABLE
+DEPT                           TABLE
+EMP                            TABLE
+MBM                            TABLE
+MENSCLG                        TABLE
+SALGRADE                       TABLE
+SHADIDOTCOM                    TABLE
+STUD                           TABLE
 
 9 rows selected.
 
-```
+SQL> select * from dept;
 
----
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
 
-# Operators
+SQL> select * from emp;
 
-> Operators are symbols used to perform a specific task.
-
-```
-Here is the list of operators:
-=> Arithmetic operator
-=> Logical operator
-=> Relational operator
-=> Concatination operator
-=> Special operator
-=> Set operator
-=> Sub query operator
-```
-
-## Queries Based on Operators:
-
-### 21. write a query to display employee name, where employee name starting with character 'M'.
-```sql
-SQL> SELECT ENAME FROM EMP
-  2  WHERE ENAME LIKE 'M%';
-
-ENAME
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
 ----------
-MARTIN
-MILLER
-```
+      7369 SMITH      CLERK           7902 17-DEC-80        800
+        20
 
-### 22. Display emp name where employee name ending with chracter 'R'.
-```sql
-SQL> SELECT ENAME FROM EMP
-  2  WHERE ENAME LIKE '%R';
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300
+        30
 
-ENAME
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
 ----------
-TURNER
-MILLER
-```
+      7566 JONES      MANAGER         7839 02-APR-81       2975
+        20
 
-### 23. Display employee details where employee name consisting four chracters.
-```sql
-SQL> SELECT ENAME FROM EMP
-  2  WHERE ENAME LIKE '____';
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400
+        30
 
-ENAME
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
 ----------
-WARD
-KING
-FORD
-```
-
-### 24. Display employee name where employee name contains four characters and first letter is 'F'.
-```sql
-SQL> SELECT ENAME FROM EMP
-  2  WHERE ENAME LIKE 'F___';
-
-ENAME
-----------
-FORD
-```
-
-### 25. Display employee name where employee name second character is 'A".
-```sql
-SELECT ENAME FROM EMP
-  2  WHERE ENAME LIKE '_A%';
-
-ENAME
-----------
-WARD
-MARTIN
-JAMES
-```
-
-### 26. Display employee name where the second last character of employee name is 'I'.
-```sql
-SQL> SELECT ENAME FROM EMP
-  2  WHERE ENAME LIKE '%I_';
-
-ENAME
-----------
-MARTIN
-```
-
-### 27. Display employee name where employee name contains two consequtive 'L' characters.
-```sql
-SQL> SELECT ENAME FROM EMP
-  2  WHERE ENAME LIKE '%LL%';
-
-ENAME
-----------
-ALLEN
-MILLER
-```
-
-### 28. Display employee name where employee name is starting with character 'M' and character 'J'.
-```sql
-SQL> SELECT ENAME FROM EMP
-  2  WHERE ENAME LIKE 'M%' OR ENAME LIKE 'J%';
-
-ENAME
-----------
-JONES
-MARTIN
-JAMES
-MILLER
-```
-
-### 29. Display all the details of employee where employee hired in month 'Dec'.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE HIREDATE LIKE '%DEC%';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800       20
-      7900 JAMES      CLERK           7698 03-DEC-81        950       30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20
-
-```
-
-### 30. Display all the details of employee where employee hired in the month Dec and Feb.
-```sql
- SELECT * FROM EMP
-  2  WHERE HIREDATE LIKE '%DEC%' OR HIREDATE LIKE '%FEB%';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800       20
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7900 JAMES      CLERK           7698 03-DEC-81        950       30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20
-
-```
-
-### 31. Write a query to display employee name, where employee name not starting with character 'M'.
-```sql
-SQL> SELECT ENAME FROM EMP
-  2  WHERE ENAME NOT LIKE 'M%';
-
-ENAME
-----------
-SMITH
-ALLEN
-WARD
-JONES
-BLAKE
-CLARK
-SCOTT
-KING
-TURNER
-ADAMS
-JAMES
-FORD
-```
-
-### 32. Display all the details of employee where employee name not ending with character 'R'.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE ENAME NOT LIKE '%R';
-
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800       20
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7566 JONES      MANAGER         7839 02-APR-81       2975       20
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000       20
-      7839 KING       PRESIDENT            17-NOV-81       5000       10
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100       20
-      7900 JAMES      CLERK           7698 03-DEC-81        950       30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20
-
-12 rows selected.
-```
-
-### 33. Display all the details where employee name not contains five characters.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE ENAME NOT LIKE '_____';
-
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30
-      7839 KING       PRESIDENT            17-NOV-81       5000       10
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300       10
-
-6 rows selected.
-```
-
-### 34. Display all the details where designation Last three letters is 'GER'.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE JOB LIKE '%GER';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7566 JONES      MANAGER         7839 02-APR-81       2975       20
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10
-
-```
-
-### 35. Display employee details, where employee name not starting with character 'M' and 'J'.[Here we should not use OR]
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE ENAME NOT LIKE 'M%'
-  3  AND ENAME NOT LIKE 'J%';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800       20
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000       20
-      7839 KING       PRESIDENT            17-NOV-81       5000       10
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100       20
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20
-
-10 rows selected.
-```
-
-### 36. Display all the details of employee where employee not hired in the month 'Dec'.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE HIREDATE NOT LIKE '%DEC%';
-
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7566 JONES      MANAGER         7839 02-APR-81       2975       20
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000       20
-      7839 KING       PRESIDENT            17-NOV-81       5000       10
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100       20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300       10
-
-11 rows selected.
-```
-
-### 37. Display all the details where emp not hired in the month 'feb', 'dec' and 'Apr'.
-```sql
-
-SQL> SELECT * FROM EMP
-  2  WHERE HIREDATE NOT LIKE '%DEC%' 
-  3  AND HIREDATE NOT LIKE '%FEB%' 
-  4  AND HIREDATE NOT LIKE '%APR%';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10
-      7839 KING       PRESIDENT            17-NOV-81       5000       10
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100       20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300       10
-
-7 rows selected.
-```
-
-### 38. Write a query to display all the details where employee name starting with vowels character.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE ENAME LIKE 'A%'
-  3  OR ENAME LIKE 'E%'
-  4  OR ENAME LIKE 'I%'
-  5  OR ENAME LIKE 'O%'
-  6  OR ENAME LIKE 'U%';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100       20
-
-```
-
-### 39. Display all the details where employee name starting with consonant characters.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE ENAME NOT LIKE 'A%'
-  3  AND ENAME NOT LIKE 'E%'
-  4  AND ENAME NOT LIKE 'I%'
-  5  AND ENAME NOT LIKE 'O%'
-  6  AND ENAME NOT LIKE 'U%';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800       20
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7566 JONES      MANAGER         7839 02-APR-81       2975       20
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000       20
-      7839 KING       PRESIDENT            17-NOV-81       5000       10
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30
-      7900 JAMES      CLERK           7698 03-DEC-81        950       30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300       10
-
-12 rows selected.
-```
-
-### 40. Display all the details along with annual salary. [IMPORTANT]
-```sql
-SQL> SELECT EMP.*, SAL*12 AS "ANNUAL_SAL"
-  2  FROM EMP;
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO ANNUAL_SAL
----------- ---------- --------- ---------- --------- ---------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800       20        9600
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30      19200
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30      15000
-      7566 JONES      MANAGER         7839 02-APR-81       2975       20       35700
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30      15000
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30       34200
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10       29400
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000       20       36000
-      7839 KING       PRESIDENT            17-NOV-81       5000       10       60000
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30      18000
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100       20       13200
-      7900 JAMES      CLERK           7698 03-DEC-81        950       30       11400
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20       36000
-      7934 MILLER     CLERK           7782 23-JAN-82       1300       10       15600
-
-14 rows selected.
-```
-
-### 41. Display all the details where employee working as 'Salesman', 'Clerk', 'Manager', and hired in the month feb, apr, dec, june.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE JOB IN ('SALESMAN', 'CLERK', 'MANAGER')
-  3  AND (HIREDATE LIKE '%APR%' OR
-  4  HIREDATE LIKE '%FEB%' OR
-  5  HIREDATE LIKE '%DEC%' OR
-  6  HIREDATE LIKE '%JUN%');
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800       20
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7566 JONES      MANAGER         7839 02-APR-81       2975       20
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10
-      7900 JAMES      CLERK           7698 03-DEC-81        950       30
-
-6 rows selected.
-```
-
-### 42. Display all the details where employee not working in dept no 30,60,90 and job not starting with characters 'MAN' and 'ANA'.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE DEPTNO NOT IN (30,60,90)
-  3  AND JOB NOT LIKE 'MAN%'
-  4  AND JOB NOT LIKE 'ANA%';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7369 SMITH      CLERK           7902 17-DEC-80        800       20
-      7839 KING       PRESIDENT            17-NOV-81       5000       10
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100       20
-      7934 MILLER     CLERK           7782 23-JAN-82       1300       10
-
-```
-
-### 43. Display all the details where earning salary greater than 1000 and designation last second character is A, B.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE SAL > 1000
-  3  AND (JOB LIKE '%A_' OR
-  4  JOB LIKE '%B');
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30
-
-```
-
-### 44. Display all the details along with annual salary where annual salary is greater than 12000.
-```sql
-SQL> SELECT EMP.*, SAL*12 AS "ANNUAL_SAL"
-  2  FROM EMP
-  3  WHERE SAL*12 > 12000;
-
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO ANNUAL_SAL
----------- ---------- --------- ---------- --------- ---------- ---------- ---------- ----------
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30      19200
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30      15000
-      7566 JONES      MANAGER         7839 02-APR-81       2975       20       35700
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30      15000
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30       34200
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10       29400
-      7788 SCOTT      ANALYST         7566 19-APR-87       3000       20       36000
-      7839 KING       PRESIDENT            17-NOV-81       5000       10       60000
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30      18000
-      7876 ADAMS      CLERK           7788 23-MAY-87       1100       20       13200
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20       36000
-      7934 MILLER     CLERK           7782 23-JAN-82       1300       10       15600
-
-12 rows selected.
-```
-
-### 45. Write a query to display all the details where employee hired in the year 81.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE HIREDATE LIKE '%81';
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7566 JONES      MANAGER         7839 02-APR-81       2975       20
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10
-      7839 KING       PRESIDENT            17-NOV-81       5000       10
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30
-      7900 JAMES      CLERK           7698 03-DEC-81        950       30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20
-
-10 rows selected.
-```
-
-### 46. Write a query to display all the details where employee not hired in the year 80, 82 and 87.
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE HIREDATE NOT LIKE '%80'
-  3  AND HIREDATE NOT LIKE '%82'
-  4  AND HIREDATE NOT LIKE '%87';
-
-
-     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
----------- ---------- --------- ---------- --------- ---------- ---------- ----------
-      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300     30
-      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500     30
-      7566 JONES      MANAGER         7839 02-APR-81       2975       20
-      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400     30
-      7698 BLAKE      MANAGER         7839 01-MAY-81       2850       30
-      7782 CLARK      MANAGER         7839 09-JUN-81       2450       10
-      7839 KING       PRESIDENT            17-NOV-81       5000       10
-      7844 TURNER     SALESMAN        7698 08-SEP-81       1500     0          30
-      7900 JAMES      CLERK           7698 03-DEC-81        950       30
-      7902 FORD       ANALYST         7566 03-DEC-81       3000       20
-
-10 rows selected.
-```
-
-### 47. Write a query to display all the details where employee working in the department no 10, 20, 30, 40 and employee name starting with consonant character and not working in the designation 'Analyst', 'clerk' and earning salary greater than 500 and less than 600 and hired in the month Dec,Sep, May, Apr,Feb. [IMPORTANT] 
-```sql
-SQL> SELECT * FROM EMP
-  2  WHERE DEPTNO IN (10,20,30,40)
-  3  AND ENAME NOT LIKE 'A%'
-  4  AND ENAME NOT LIKE 'E%'
-  5  AND ENAME NOT LIKE 'I%'
-  6  AND ENAME NOT LIKE 'O%'
-  7  AND ENAME NOT LIKE 'U%'
-  8  AND JOB NOT IN ('ANALYST', 'CLERK')
-  9  AND SAL > 500 AND SAL < 600
- 10  AND (HIREDATE LIKE '%DEC%'
- 11  OR HIREDATE LIKE '%SEP%'
- 12  OR HIREDATE LIKE '%MAY%'
- 13  OR HIREDATE LIKE '%APR%'
- 14  OR HIREDATE LIKE '%FEB%');
-
-no rows selected
-```
-> Another Approach
-
-```sql
-SELECT * FROM EMP
-WHERE DEPTNO IN (10,20,30,40)
-AND ENAME NOT LIKE 'A%' 
-AND ENAME NOT LIKE 'E%' 
-AND ENAME NOT LIKE 'I%'
-AND ENAME NOT LIKE 'O%' 
-AND ENAME NOT LIKE 'U%'
-AND JOB NOT IN ('ANALYST','CLERK')
-AND SAL > 500 AND SAL < 600
-AND TO_CHAR(HIREDATE,'MON') IN ('DEC','SEP','MAY','APR','FEB');
-```
-
-### 48. Write a query to display employee, where employees earning commission.
-### 49. Display employee where employees not earning commission.
-### 50. all the details of emp, where ename starts with consonant character and earning salary greater than 1000 and less than 5000 and employees not earning any commision and working in the designation Salesman, Analyst, Manager and Clerk.
-
----
-
-# Function
-
-## Function Hierarchy
-
-```
-Function
-│
-├──── User Defined
-│
-└──── Pre Defined
-          │
-          ├──── Single Row Functions
-          │              │
-          │              ├──── Character Single Row Function
-          │              │              │
-          │              │              ├──── Case Manipulation
-          │              │              │
-          │              │              └──── Character Manipulation
-          │              │
-          │              ├──── Number Single Row Function
-          │              │
-          │              ├──── Date Single Row Function
-          │              │
-          │              ├──── General Single Row Function
-          │              │
-          │              └──── Conversion Single Row Function
-          │
-          └──── Multi Row Functions
-```
-
-# Single Row Functions
-
-## Queries based on Character Single Row Function
-### In Case Manipulation we have three functions:
-
->upper(argument)  
->lower(argument)  
->initcap(argument)
-
-### In Character Manipulation we have these functions:
-
->substring  
->replace  
->instring  
->reverse  
->concat  
->trim
-
-## Queries based on Character Manipulation:
-
-### 51. Write a query to display first letter from the employee name.
-### 52. Write a query to display first two letters from the employye name.
-### 53. Write a query to display first three letters from the employye name.
-### 54. Write a query to display second letter from the employee name.
-### 55. Write a query to display last letter from the employee name.
-### 56. Write a query to display last two letters from the employee name.
-### 57. Write a query to display last 2nd letter from employee name.
-### 58. Input: PUSHPA | OUTPUT: USHA  [Use replace]
-### 59. Input: manoj@gmail.com | find index value for '@'.
-### 60. Find the index of first space in the given input. [Input: manoj a n]
-### 61. Find the index of second space in the given input. [Input: manoj a m]
-### 62. Find number of character 'A' in the given input. [Input: NAYANA].
-
----
-
-## Number Single Row Function
-```
-All number single row functions
-1. mod function
-2. abs function
-3. power function
-4. square root
-5. round function [Important]
-6. trunc function [Important]
-```
-
-## Date Single row function
-```
-All Date single row functions
-1. extract function(day/month/year from column)
-2. add_months('date1', no_of_months)
-3. months_between('date1', 'date2')
-4. last_day('date1')
-```
-
-## Queries based on Number Single row function and Date Single row function
-
-```sql
--- Number Single row function
-SQL> SELECT MOD(11,2) FROM DUAL;
-
- MOD(11,2)
-----------
-         1
-
-SQL> SELECT ABS(-100) FROM DUAL;
-
- ABS(-100)
-----------
-       100
-
-SQL> SELECT POWER(3,4) FROM DUAL;
-
-POWER(3,4)
-----------
-        81
-
-SQL> SELECT SQRT(100) FROM DUAL;
-
- SQRT(100)
-----------
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450
         10
-```
 
-```sql
---ROUND FUNCTION
-SQL> SELECT ROUND(37.7547, 2) FROM DUAL;
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000
+        20
 
-ROUND(37.7547,2)
-----------------
-           37.75
+      7839 KING       PRESIDENT            17-NOV-81       5000
+        10
 
-SQL> SELECT ROUND(37.7567, 2) FROM DUAL;
 
-ROUND(37.7567,2)
-----------------
-           37.76
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0
+        30
 
-SQL> SELECT ROUND (3476.123, -3) FROM DUAL;
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100
+        20
 
-ROUND(3476.123,-3)
-------------------
-              3000
+      7900 JAMES      CLERK           7698 03-DEC-81        950
+        30
 
-SQL> SELECT ROUND (678.98, 1) FROM DUAL;
 
-ROUND(678.98,1)
----------------
-            679
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7902 FORD       ANALYST         7566 03-DEC-81       3000
+        20
 
-SQL> SELECT ROUND (987.17, -3) FROM DUAL;
+      7934 MILLER     CLERK           7782 23-JAN-82       1300
+        10
 
-ROUND(987.17,-3)
-----------------
-            1000
-
-SQL> SELECT ROUND (47.18, -2) FROM DUAL;
-
-ROUND(47.18,-2)
----------------
-              0
-
-SQL> SELECT ROUND (78.764, 3) FROM DUAL;
-
-ROUND(78.764,3)
----------------
-         78.764
-
-SQL> SELECT ROUND (78.764, -3) FROM DUAL;
-
-ROUND(78.764,-3)
-----------------
-               0
-
-```
-
-```sql
---TRUNC FUNCTION
-SP2-0734: unknown command beginning "TRUNC FUNC..." - rest of line ignored.
-SQL> SELECT TRUNC (37.7547, 2) FROM DUAL;
-
-TRUNC(37.7547,2)
-----------------
-           37.75
-
-SQL> SELECT TRUNC (37.7567, 2) FROM DUAL;
-
-TRUNC(37.7567,2)
-----------------
-           37.75
-
-SQL> SELECT TRUNC (3476.123, -3) FROM DUAL;
-
-TRUNC(3476.123,-3)
-------------------
-              3000
-
-SQL> SELECT TRUNC (678.98, 1) FROM DUAL;
-
-TRUNC(678.98,1)
----------------
-          678.9
-
-SQL> SELECT TRUNC (987.17, -3) FROM DUAL;
-
-TRUNC(987.17,-3)
-----------------
-               0
-
-SQL> SELECT TRUNC (47.18, -2) FROM DUAL;
-
-TRUNC(47.18,-2)
----------------
-              0
-
-SQL> SELECT TRUNC (78.764, 3) FROM DUAL;
-
-TRUNC(78.764,3)
----------------
-         78.764
-
-SQL> SELECT TRUNC (78.764, -3) FROM DUAL;
-
-TRUNC(78.764,-3)
-----------------
-               0
-```
-
-```SQL
--- DATE SINGLE ROW FUNCTION
-SQL> SELECT EXTRACT (MONTH FROM HIREDATE) FROM EMP;
-
-EXTRACT(MONTHFROMHIREDATE)
---------------------------
-                        12
-                         2
-                         2
-                         4
-                         9
-                         5
-                         6
-                         4
-                        11
-                         9
-                         5
-
-EXTRACT(MONTHFROMHIREDATE)
---------------------------
-                        12
-                        12
-                         1
 
 14 rows selected.
 
-SQL> SET PAGES 100 LINES 100
-SQL> SELECT EXTRACT (MONTH FROM HIREDATE) FROM EMP;
+SQL> set pages100 lines100;  //After set pages and lines as 100, now emp table will come in proper grid fromat.
 
-EXTRACT(MONTHFROMHIREDATE)
---------------------------
-                        12
-                         2
-                         2
-                         4
-                         9
-                         5
-                         6
-                         4
-                        11
-                         9
-                         5
-                        12
-                        12
-                         1
+SQL> select * from emp;
 
-14 rows selected.
-```
-
-```SQL
-SQL> SELECT ADD_MONTHS('12-JUN-2027', 12) FROM DUAL;
-
-ADD_MONTH
----------
-12-JUN-28
-
-SQL> SELECT ADD_MONTHS('12-JUN-2027', 6) FROM DUAL;
-
-ADD_MONTH
----------
-12-DEC-27
-```
-
-```SQL
-SQL> SELECT MONTHS_BETWEEN ('12-JUN-2027', '12-JUN-2026') FROM DUAL;
-
-MONTHS_BETWEEN('12-JUN-2027','12-JUN-2026')
--------------------------------------------
-                                         12
-
-```                                         
-
-```SQL
-SQL> SELECT LAST_DAY('10-FEB-2020') FROM DUAL;
-
-LAST_DAY(
----------
-29-FEB-20
-```
-
-### 63. Write a query to display details of employee where they are earning even salary.
-### 64. Write a query to display details of employee where they are earning odd salary.
-### 65. Display all the employee name, where employee name consisting even no of characters.
-### 66. Display all the employee name, where employee name consisting odd no of characters.
-### 67. find the square root for the employees salary.
-### 68. Write a query to display emp name, employee hired year.
-### 69. Write a query to display emp name, employee experience.
-### 70. Display all the details of the employee along with the employees experience.
-### 71. Find last day from the column hiredate.
-### 72. find all the details along with the experience, where experience is greater than 30.
-
-## General Single row function
-
->nvl(argument1, argument2)  |    (Null value logic)  
->nvl2(argument1, argument2, argument3)   |     (Null value logic 2)
-
->Note:   
->100 + null => null  
->100 * null => null  
-
-```sql
-SQL> SELECT ENAME, SAL, COMM, SAL+NVL(COMM,0)
-  2  FROM EMP;
-
-ENAME             SAL       COMM SAL+NVL(COMM,0)
----------- ---------- ---------- ---------------
-SMITH             800                        800
-ALLEN            1600        300            1900
-WARD             1250        500            1750
-JONES            2975                       2975
-MARTIN           1250       1400            2650
-BLAKE            2850                       2850
-CLARK            2450                       2450
-SCOTT            3000                       3000
-KING             5000                       5000
-TURNER           1500          0            1500
-ADAMS            1100                       1100
-
-ENAME             SAL       COMM SAL+NVL(COMM,0)
----------- ---------- ---------- ---------------
-JAMES             950                        950
-FORD             3000                       3000
-MILLER           1300                       1300
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7788 SCOTT      ANALYST         7566 19-APR-87       3000                    20
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7876 ADAMS      CLERK           7788 23-MAY-87       1100                    20
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
 
 14 rows selected.
 
 
-SQL> SET PAGES 100 LINES 100;
-SQL> SELECT ENAME, SAL, COMM, NVL2(COMM, 'EARNING COMMISION', 'NO COMMISION') STATUS
-  2  FROM EMP;
+SQL> desc dept;
 
-ENAME             SAL       COMM STATUS
----------- ---------- ---------- -----------------
-SMITH             800            NO COMMISION
-ALLEN            1600        300 EARNING COMMISION
-WARD             1250        500 EARNING COMMISION
-JONES            2975            NO COMMISION
-MARTIN           1250       1400 EARNING COMMISION
-BLAKE            2850            NO COMMISION
-CLARK            2450            NO COMMISION
-SCOTT            3000            NO COMMISION
-KING             5000            NO COMMISION
-TURNER           1500          0 EARNING COMMISION
-ADAMS            1100            NO COMMISION
-JAMES             950            NO COMMISION
-FORD             3000            NO COMMISION
-MILLER           1300            NO COMMISION
-
-14 rows selected.
-```
-
-# Multi Row Functions
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ DEPTNO                                                NOT NULL NUMBER(2)
+ DNAME                                                          VARCHAR2(14)
+ LOC   
 
 ```
-Multi Row Functions:
-  Maximum
-  Minimum
-  Average
-  Sum
-  Count
-```
-## Queries based on Multi row functions.
-
-### 73. Write a query to find maximum salary.
-### 74. Write a query to find minimum salary.
-### 75. Write a query to find Average salary.
-### 76. Write a query to find total salary.
-### 77. Write a query to find number of rows(records).
-### 78. Write a query to find maximum salary present in the department 10.
-### 79. Write a query to find total salary where designation is Salesman and Analyst.
-### 80. Find the average salary from the hired year 81.
-### 81. Find the no of employees present in the department no 30.
-### 82. Find the no of employees working as a clerk and Salesman.
-### 83. Write a query to find no of employees where emp name starting with vowel character.
-### 84. Find maximum, minimum, average and total salary.
-### 85. Find maximum salary, employee name.
-### 86. Find minimum salary, employee name.
-### 87. Find maximum salary, where maximum salary is greater than 3000.
-### 88. Find no of employees who is hired in the month feb, dec, april.
-### 89. Find no of employees who is hired in the year 80, 82, 87.
-### 90. Find the no of employees who is earning salary greater than 1000 and less than 3000.
-### 91. Find maximum salary from the hired year 81.
-### 92. Find the minimum salary from the hired year 81.
-### 93. Find maximum and minimum salary where dept no is 20 and employee name starting with consonant character.
 
 ---
 
-# Group By
+# Examples on Table Creation and Insertion:
 
-> Order Of Execution:  
-> i. from  
-> ii. where (executes row by row)  
-> iii. group by (executes row by row)  
-> iv. select
+## 1. Creating Student Table":
 
-## Queries based on Group By.
+```sql
+SQL> create table student(
+  2  sid number primary key,
+  3  name varchar(15) not null,
+  4  dob date not null,
+  5  phone number(10) );
 
-### 94. Write a query to find no of employees working in the each department except department 10.
-### 95. Find maximum salary in each department.
-### 96. Find total salary present in the each designation except President.
-### 97. Find the employees working in the each department where emp name starting with consonant characters.
-### 98. Write a query to find no of employees in each designation only if they hired in the year 81.
+Table created.
 
-## Having 
+SQL> insert into student values(101, 'nithin', '12-nov-2004', 8240898175);
+1 row created.
 
-> Having is a SQL clause used to filter the group records.  
-> Having executes group by group.  
->Multi row functions are allowed in having clause.  
-> having executes after group by.
+SQL> insert into student values(102, 'prem', '12-dec-2044', 8240895675);
+1 row created.
+
+SQL> insert into student values(103, 'priya', '12-jan-2005', 824085);
+1 row created.
+
+SQL> insert into student values(104, 'bahubali', '12-feb-2055', 824078);
+1 row created.
+
+SQL> select * from student;
+
+       SID NAME            DOB            PHONE
+---------- --------------- --------- ----------
+       101 nithin          12-NOV-04 8240898175
+       102 prem            12-DEC-44 8240895675
+       103 priya           12-JAN-05     824085
+       104 bahubali        12-FEB-55     824078
 
 ```
-Order of Execution:
-  from  
-  where (row by row execution)  
-  group by(row by row execution)  
-  having (group by group execution)
-  select
+
+## 2. Marriage Bureau for Female:
+
+```sql
+SQL> create table mbf(
+  2  sno number primary key,
+  3  name varchar(15),
+  4  age number(2) check(age >= 18) );
+
+Table created.
+
+SQL> insert into mbf values(1, 'Riya', 18);
+1 row created.
+
+SQL> insert into mbf values(2, 'Priya', 28);
+1 row created.
+
+SQL> insert into mbf values(3, 'Sriya', 25);
+1 row created.
+
+SQL> select * from mbf;
+
+       SNO NAME                   AGE
+---------- --------------- ----------
+         1 Riya                    18
+         2 Priya                   28
+         3 Sriya                   25
+
 ```
 
-### 99. Find the no of employees working in each department where more than one employee working in the each department.
-### 100. find the total salary present in each job, where total salary is greater than 5700.
-### 101. Find maximum salary present in the each department where maximum salary is greater than 2900.
-### 102. Find number of employees working(hired) in the each job where they are hired in the year 81 where at least two employees are working in each job.
-### 103. find the duplicate salary.
-### 104. Find the duplicate employee name.
-### 105. Find the unique designation.
-### 106. Find the unique salary.
-### 107. Find the no of employees working in each department where employees are not earning any commision and atleast two employees are working in each department.
-### 108. find the no employees hired in the each year.
-### 109. Find the number of employees hired in the each month.
-### 110. Find the first highest salary.
-### 111. Find the first lowest salary.
-### 112. find the first hiredate.
-### 113. Find the last hiredate.
-### 114. Find the no of employees hired in the each month, where more than one employee hired in the each month.
+## 3. Table for MENs College [Set a default value for gender as 'Male']:
 
+```sql
+SQL> create table mensCLG(
+  2  sid number primary key,
+  3  name varchar(15),
+  4  gender varchar(10) default 'male');
+
+Table created.
+
+SQL> insert into mensCLG values(101, 'bheem', 'male');
+1 row created.
+
+SQL> insert into mensCLG values(102, 'kalia', default);
+1 row created.
+
+SQL> insert into mensCLG values(103, 'jaggu', default);
+1 row created.
+
+SQL> insert into mensCLG (sid, name) values(104, 'dholu');
+1 row created.
+
+SQL> select * from mensCLG;
+
+       SID NAME            GENDER
+---------- --------------- ----------
+       101 bheem           male
+       102 kalia           male
+       103 jaggu           male
+       104 dholu           male
+
+```
+
+## 4. Make a customer Table having columns as [CID, name, email, phone(exact 10 digits)]
+
+```sql
+SQL> create table customer(
+  2  cid number primary key,
+  3  name varchar(15) not null,
+  4  email varchar(25),
+  5  phone number(10) check(length(phone) = 10));
+
+Table created.
+
+SQL> insert into customer values(101, 'prem', 'abc@gmail.com', 8240368156);
+1 row created.
+
+SQL> insert into customer values(102, 'riya', 'def@gmail.com', 8240364568);
+1 row created.
+
+SQL> insert into customer values(103, 'priya', 'ghi@gmail.com', 82403648);
+insert into customer values(103, 'priya', 'ghi@gmail.com', 82403648)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SCOTT.SYS_C009691) violated  //Here the condition got violated.
+
+
+SQL> select * from customer;
+
+       CID NAME            EMAIL                          PHONE
+---------- --------------- ------------------------- ----------
+       101 prem            abc@gmail.com             8240368156
+       102 riya            def@gmail.com             8240364568
+
+```
+
+## 5. Make a table for "Marriage Bureau for Male having columns as [sno, name, gender(it should only accept male), age(age >= 21 AND age <=45) ]:
+
+```sql
+SQL> create table MBM(
+  2  sno number primary key,
+  3  name varchar(20),
+  4  gender char(1) check(gender = 'M'),
+  5  age number(2) check(age >= 21 and age <= 45) );
+
+Table created.
+
+SQL> commit;
+
+Commit complete.
+```
 ---
 
-# Order By
+# Queries Based On Foreign Keys:
 
-> Queries based on Order by:
+## 1. Example of Director and Movie table
 
-### 115. Write a query to display employee name and order the employee name is ascending.
-### 116. Display employee name, salary , Order the salary in descending.
-### 117. Write a query to display all the details and order the hiredate in ascending.
-### 118. Write a query to display all the details of employee where employee name starting with consonant character and not earning any commision and order the salary in ascending.
-### 119. Write a query to display no of employees working in each department, order the department no in ascending.
-### 120. Write a query to display total salary present in each job and order the job in descending.
-### 121. Write a query to display no of employees working in each job where at least two employees are working in each job and order the job in ascending.
-### 122. Write a query to display no of employees working in each department where employees hired in the year 81 and more than two employees are working in the department and order the deptno in ascending.
-### 123. Display all the details of employee along with annual salary, order the annual salaray in descending.
-### 124. Write a query to display all the details where employee name consisting odd characters and order the employee name in ascending.
+```sql
+SQL> create table director(
+  2  dir_id char(3) primary key,
+  3  dir_name varchar(15) not null,
+  4  dir_age number );
+
+Table created.
+
+SQL> create table movie(
+  2  m_id number primary key,
+  3  m_name varchar(20),
+  4  rel_date date,
+  5  dir_id char(3),
+  6  foreign key(dir_id) references director(dir_id) );
+
+Table created.
+
+SQL> insert into director values('D01', 'Rajamouli', 16);
+1 row created.
+
+SQL> insert into director values('D02', 'RGV', 46);
+1 row created.
+
+SQL> insert into director values('D03', 'Prashant', 35);
+1 row created.
+
+SQL> insert into director values('D04', 'Manoj', 34);
+1 row created.
+
+---------------------
+
+SQL> insert into movie values(1, 'Bahubali', '12-jan-2017', 'D01');
+1 row created.
+
+SQL> insert into movie values(2, 'KGF', '12-feb-2022', 'D03');
+1 row created.
+
+SQL> insert into movie values(3, 'Salaar', '15-apr-2023', 'D03');
+1 row created.
+
+SQL> insert into movie values(4, 'SQL', '15-june-2026', 'D04');
+1 row created.
+
+//-----Here you will get error because we do not have any Director having director id as D05
+SQL> insert into movie values(5, 'Java', '15-july-2026', 'D05');
+insert into movie values(5, 'Java', '15-july-2026', 'D05')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SCOTT.SYS_C009699) violated - parent key not
+found
+
+----------------
+
+SQL> select * from movie;
+
+      M_ID M_NAME               REL_DATE  DIR
+---------- -------------------- --------- ---
+         1 Bahubali             12-JAN-17 D01
+         2 KGF                  12-FEB-22 D03
+         3 Salaar               15-APR-23 D03
+         4 SQL                  15-JUN-26 D04
+
+SQL> select * from director;
+
+DIR DIR_NAME           DIR_AGE
+--- --------------- ----------
+D01 Rajamouli               16
+D02 RGV                     46
+D03 Prashant                35
+D04 Manoj                   34
+```
+
+## 2.  Table for Countries and their Regions
+
+```sql
+SQL> create table regions(
+  2  region_id char(2) primary key,
+  3  region_name varchar(15));
+
+Table created.
+
+SQL> create table countries(
+  2  country_id number primary key,
+  3  country_name varchar(15),
+  4  region_id char(2),
+  5  foreign key(region_id) references regions(region_id) );
+
+Table created.
+
+SQL> insert into regions values('R1', 'Asia');
+1 row created.
+
+SQL> insert into regions values('R2', 'Europe');
+1 row created.
+
+SQL> insert into regions values('R3', 'Middle East');
+1 row created.
+
+SQL> select * from regions;
+
+RE REGION_NAME
+-- ---------------
+R1 Asia
+R2 Europe
+R3 Middle East
+
+---------------
+
+SQL> insert into countries values(1, 'India', 'R1');
+1 row created.
+
+SQL> insert into countries values(2, 'China', 'R1');
+1 row created.
+
+SQL> insert into countries values(3, 'Iran', 'R3');
+1 row created.
+
+SQL> insert into countries values(4, 'Oman', 'R3');
+1 row created.
+
+SQL> insert into countries values(5, 'Saudi Arabia', 'R3');
+1 row created.
+
+SQL> select * from countries;
+
+COUNTRY_ID COUNTRY_NAME    RE
+---------- --------------- --
+         1 India           R1
+         2 China           R1
+         3 Iran            R3
+         4 Oman            R3
+         5 Saudi Arabia    R3
+```
+
+## 3. Customers  -> Orders (One-to-Many)
+```
+customers
+•	customer_id (PK)
+•	customer_name
+•	country
+orders
+•	order_id (PK)
+•	customer_id (FK → customers.customer_id)
+•	amount
+•	order_date
+```
+
+```sql
+SQL> create table customers(
+  2  customer_id number primary key,
+  3  customer_name varchar(15),
+  4  country varchar(20)
+  5  );
+
+Table created.
+
+
+SQL> create table orders(
+  2  order_id number primary key,
+  3  customer_id number,
+  4  amount number(10, 2),
+  5  order_date date,
+  6  foreign key(customer_id) references customers(customer_id)
+  7  );
+
+Table created.
+
+```
+
+## 4. Users → User_Profile (One-to-One)
+```
+users
+•	user_id (PK)
+•	username
+user_profile
+•	profile_id (PK)
+•	user_id (FK → users.user_id & UNIQUE)
+•	phone
+•	address
+```
+
+```sql
+SQL> create table users(
+  2  user_id number primary key,
+  3  username varchar(20)
+  4  );
+
+Table created.
+
+SQL> create table user_profile(
+  2  profile_id number primary key,
+  3  user_id number unique,
+  4  phone varchar(15),
+  5  address varchar(50),
+  6  foreign key(user_id) references users(user_id)
+  7  );
+
+Table created.
+```
+>The key here is **user_id number unique** — this prevents a second profile from being linked to the same user.
+
+## 5. Categories → Products (One-to-Many)
+```
+categories
+•	category_id (PK)
+•	category_name
+products
+•	product_id (PK)
+•	product_name
+•	price
+•	category_id (FK → categories.category_id)
+```
+>Same One-to-Many pattern — one category can have many products.
+
+```sql
+SQL> create table categories(
+  2  category_id number primary key,
+  3  category_name varchar(20)
+  4  );
+
+Table created.
+
+SQL> create table products(
+  2  product_id number primary key,
+  3  product_name varchar(20),
+  4  price number(10,2),
+  5  category_id number,
+  6  foreign key(category_id) references categories(category_id)
+  7  );
+
+Table created.
+```
+```
+number(10, 2) means:
+10 → total digits allowed
+2 → digits after decimal point
+
+So it can store values like 99999999.99 (8 digits before + 2 after decimal).
+```
+
+## 6. Teachers → Classes (One-to-Many)
+
+```
+teachers
+•	teacher_id (PK)
+•	teacher_name
+classes
+•	class_id (PK)
+•	class_name
+•	teacher_id (FK → teachers.teacher_id)
+```
+
+```sql
+SQL> create table teachers(
+  2  teacher_id number primary key,
+  3  teacher_name varchar(20)
+  4  );
+
+Table created.
+
+SQL> create table classes(
+  2  class_id number primary key,
+  3  class_name varchar(15),
+  4  teacher_id number,
+  5  foreign key(teacher_id) references teachers(teacher_id)
+  6  );
+
+Table created.
+
+```
+
+## 7. Doctors → Patients (One-to-Many)
+
+```
+doctors
+•	doctor_id (PK)
+•	doctor_name
+•	specialization
+patients
+•	patient_id (PK)
+•	patient_name
+•	doctor_id (FK → doctors.doctor_id)
+```
+>One Doctor can have many patients.
+
+```sql
+SQL> create table doctors(
+  2  doctor_id number primary key,
+  3  doctor_name varchar(15),
+  4  specialization varchar(15)
+  5  );
+
+Table created.
+
+SQL> create table patients(
+  2  patient_id number primary key,
+  3  patient_name varchar(15),
+  4  doctor_id number,
+  5  foreign key(doctor_id) references doctors(doctor_id)
+  6  );
+
+Table created.
+
+```
+
+## 8. Flights → Tickets (One-to-Many)
+```
+flights
+•	flight_id (PK)
+•	flight_name
+•	source
+•	destination
+tickets
+•	ticket_id (PK)
+•	flight_id (FK → flights.flight_id)
+•	passenger_name
+```
+
+>One flight can have many tickets.
+
+```sql
+SQL> create table flights(
+  2  flight_id number primary key,
+  3  flight_name varchar(15),
+  4  source varchar(15),
+  5  destination varchar(15)
+  6  );
+
+Table created.
+
+SQL> create table tickets(
+  2  ticket_id number primary key,
+  3  flight_id number,
+  4  passenger_name varchar(15),
+  5  foreign key(flight_id) references flights(flight_id)
+  6  );
+
+Table created.
+
+```
+
+## 9. Hotels → Rooms (One-to-Many)
+```
+hotels
+•	hotel_id (PK)
+•	hotel_name
+•	city
+rooms
+•	room_id (PK)
+•	hotel_id (FK → hotels.hotel_id)
+•	room_type
+•	price_per_night
+```
+
+>One hotel can have many rooms.
+
+```sql
+SQL> create table hotels(
+  2  hotel_id number primary key,
+  3  hotel_name varchar(15),
+  4  city varchar(15)
+  5  );
+
+Table created.
+
+SQL> create table rooms(
+  2  room_id number primary key,
+  3  hotel_id number,
+  4  room_type varchar(15),
+  5  price_per_night number(10,2),
+  6  foreign key(hotel_id) references hotels(hotel_id)
+  7  );
+
+Table created.
+```
+
+## 10. Suppliers → Products (One-to-Many)
+```
+suppliers
+•	supplier_id (PK)
+•	supplier_name
+•	contact_no
+products
+•	product_id (PK)
+•	product_name
+•	supplier_id (FK → suppliers.supplier_id)
+•	unit_price
+```
+
+>One supplier can supply many products.
+
+```sql
+SQL> create table suppliers(
+  2  supplier_id number primary key,
+  3  supplier_name varchar(20),
+  4  contact_no varchar(15)
+  5  );
+
+Table created.
+
+SQL> create table products(
+  2  product_id number primary key,
+  3  product_name varchar(20),
+  4  supplier_id number,
+  5  unit_price number(10,2),
+  6  foreign key(supplier_id) references suppliers (supplier_id)
+  7  );
+
+Table created.
+```
+
+## 11. Employees ↔ Projects (Many-to-Many)
+```
+employees
+•	emp_id (PK)
+•	emp_name
+•	department
+projects
+•	project_id (PK)
+•	project_name
+employee_project
+•	emp_id (FK → employees.emp_id)
+•	project_id (FK → projects.project_id)
+•	(Composite PK: emp_id + project_id
+```
+
+>Many-to-Many needs a junction table (employee_project) that holds both foreign keys together as a composite primary key.
+
+```sql
+-- Employees table
+SQL> create table employees(
+  2  emp_id number primary key,
+  3  emp_name varchar(20),
+  4  department varchar(20)
+  5  );
+
+Table created.
+
+-- Projects Tables
+SQL> create table projects(
+  2  project_id number primary key,
+  3  project_name varchar(20)
+  4  );
+
+Table created.
+
+-- Junction table
+SQL> create table employee_project(
+  2  emp_id number,
+  3  project_id number,
+  4  primary key(emp_id, project_id),
+  5  foreign key(emp_id) references employees(emp_id),
+  6  foreign key(project_id) references projects(project_id)
+  7  );
+
+Table created.
+```
+> The composite PK (emp_id + project_id) ensures one employee can't be assigned to the same project twice.
+
+Here's what's happening step by step:
+
+1. `employees` and `projects` are independent tables — no relation between them yet, just normal PK tables.
+
+2. The problem — One employee can work on many projects, and one project can have many employees. You can't store this in either table directly.
+
+3. Solution → Junction table `employee_project` — It sits in the middle and just stores pairs:
+
+```
+emp_id               project_id
+1                    101
+1                    102 ← Employee 1 is in 2 projects 
+2                    101 ← Project 101 has 2 employees
+```
+
+4. Composite Primary Key — `PRIMARY KEY (emp_id, project_id)` means the **combination** must be unique. So:
+   - Same employee can't be added to same project twice
+   - But same employee can appear with different projects ✓
+
+5. Two Foreign Keys —
+   - `emp_id` must exist in `employees`
+   - `project_id` must exist in `projects`
+   
+   So you can't assign an employee or project that doesn't exist.
+
+
+## 12. Libraries → Books (One-to-Many) 
+```
+libraries
+•	library_id (PK)
+•	library_name
+•	address
+library_books
+•	book_id (PK)
+•	library_id (FK → libraries.library_id)
+•	title
+•	category
+```
+
+> One Liabrary can have many books.
+
+```sql
+SQL> create table libraries(
+  2  library_id number primary key,
+  3  library_name varchar(20),
+  4  address varchar(100)
+  5  );
+
+Table created.
+
+SQL> create table library_books(
+  2  book_id number primary key,
+  3  library_id number,
+  4  title varchar(30),
+  5  category varchar(50),
+  6  foreign key(library_id) references libraries(library_id)
+  7  );
+
+Table created.
+```
+
+## 13. Banks → Accounts (One-to-Many)
+
+```
+banks
+•	bank_id (PK)
+•	bank_name
+•	branch_location
+accounts
+•	account_id (PK)
+•	bank_id (FK → banks.bank_id)
+•	account_holder
+•	balance
+```
+
+> One bank can have many accounts.
+
+```sql
+
+SQL> create table banks(
+  2  bank_id number primary key,
+  3  bank_name varchar(50),
+  4  branch_location varchar(100)
+  5  );
+
+Table created.
+
+SQL> create table accounts(
+  2  account_id number primary key,
+  3  bank_id number,
+  4  account_holder varchar(50),
+  5  balance number(15,2),
+  6  foreign key(bank_id) references banks(bank_id)
+  7  );
+
+Table created.
+```
 
